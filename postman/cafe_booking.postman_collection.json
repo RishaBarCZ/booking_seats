@@ -1,0 +1,3887 @@
+{
+  "info": {
+    "_postman_id": "8c349e01-5503-46b1-badb-f2409d1294a8",
+    "name": "Система бронирования мест в кафе — Postman Collection",
+    "description": "Generated from OpenAPI 0.0.3. Regular login saves token to `token`; admin login uses userAdmin/passwordAdmin and saves token to `tokenAdmin`. Protected user requests use `Authorization: Bearer {{token}}`; admin requests use `Authorization: Bearer {{tokenAdmin}}`.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "18212522",
+    "_collection_link": "https://go.postman.co/collection/18212522-8c349e01-5503-46b1-badb-f2409d1294a8?source=collection_link"
+  },
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "POST /api/v1/users/ — Create Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"admin_user_id\", String(savedId));",
+                  "        pm.globals.set(\"admin_user_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"admin\",\n  \"email\": \"{{userAdmin}}\",\n  \"phone\": \"{{phoneAdmin}}\",\n  \"password\": \"{{passwordAdmin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            },
+            "description": "Создание пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/users/ — Create User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"user_id\", String(savedId));",
+                  "        pm.globals.set(\"user_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            },
+            "description": "Создание пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/users/ — Create Manager",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"manager_user_id\", String(savedId));",
+                  "        pm.globals.set(\"manager_user_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{userManager}}\",\n  \"email\": \"{{emailManager}}\",\n  \"phone\": \"{{phoneManager}}\",\n  \"password\": \"{{passwordManager}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            },
+            "description": "Создание пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/auth/login — Login User, save token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"access_token\":{\"type\":\"string\",\"title\":\"Access Token\"},\"token_type\":{\"type\":\"string\",\"title\":\"Token Type\",\"default\":\"bearer\"}},\"type\":\"object\",\"required\":[\"access_token\"],\"title\":\"TokenSchema\",\"description\":\"JWT токен.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    const token = data.token || data.access_token;",
+                  "    pm.test(\"token is present in response\", function () {",
+                  "        pm.expect(token, \"token or access_token\").to.be.a(\"string\").and.not.empty;",
+                  "    });",
+                  "    if (token) {",
+                  "        pm.collectionVariables.set(\"token\", token);",
+                  "        pm.globals.set(\"token\", token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{login}}\",\n  \"password\": \"{{password}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Авторизация пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/auth/login — Login Manager, save token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"access_token\":{\"type\":\"string\",\"title\":\"Access Token\"},\"token_type\":{\"type\":\"string\",\"title\":\"Token Type\",\"default\":\"bearer\"}},\"type\":\"object\",\"required\":[\"access_token\"],\"title\":\"TokenSchema\",\"description\":\"JWT токен.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    const token = data.token || data.access_token;",
+                  "    pm.test(\"token is present in response\", function () {",
+                  "        pm.expect(token, \"token or access_token\").to.be.a(\"string\").and.not.empty;",
+                  "    });",
+                  "    if (token) {",
+                  "        pm.collectionVariables.set(\"tokenManager\", token);",
+                  "        pm.globals.set(\"tokenManager\", token);",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{emailManager}}\",\n  \"password\": \"{{passwordManager}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Авторизация пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/auth/login — Login Admin, save tokenAdmin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"access_token\":{\"type\":\"string\",\"title\":\"Access Token\"},\"token_type\":{\"type\":\"string\",\"title\":\"Token Type\",\"default\":\"bearer\"}},\"type\":\"object\",\"required\":[\"access_token\"],\"title\":\"TokenSchema\",\"description\":\"JWT токен.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    const token = data.token || data.access_token;",
+                  "    pm.test(\"tokenAdmin is present in response\", function () {",
+                  "        pm.expect(token, \"token or access_token\").to.be.a(\"string\").and.not.empty;",
+                  "    });",
+                  "    if (token) {",
+                  "        pm.collectionVariables.set(\"tokenAdmin\", token);",
+                  "        pm.globals.set(\"tokenAdmin\", token);",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"login\": \"{{userAdmin}}\",\n  \"password\": \"{{passwordAdmin}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/auth/login",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "auth",
+                "login"
+              ]
+            },
+            "description": "Авторизация пользователя."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Users",
+      "item": [
+        {
+          "name": "GET /api/v1/users/me — Get Me as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"user_id\", String(savedId));",
+                  "        pm.globals.set(\"user_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ]
+            },
+            "description": "Получение текущего пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/users/me — Get Me as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"admin_user_id\", String(savedId));",
+                  "        pm.globals.set(\"admin_user_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ]
+            },
+            "description": "Получение текущего пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/users/ — Get Users as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"},\"type\":\"array\",\"title\":\"Response Get Users Api V1 Users  Get\"}};",
+                  "const acceptedStatusCodes = [403];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 403\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users"
+              ]
+            },
+            "description": "Получение списка пользователей."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/users/{user_id} — Get User as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Получение пользователя по ID."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/users/me — Update Me as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/me",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                "me"
+              ]
+            },
+            "description": "Обновление текущего пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/users/{user_id} — Update User as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"tg_id\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Tg Id\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\",\"is_active\"],\"title\":\"UserResponseSchema\",\"description\":\"Схема ответа пользователя.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"{{email}}\",\n  \"phone\": \"{{phone}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Обновление пользователя."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Кафе",
+      "item": [
+        {
+          "name": "POST /api/v1/cafes — Create Cafe as Admin, save cafe_id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"managers\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},\"type\":\"array\",\"title\":\"Managers\",\"default\":[]},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"CafeInfo\",\"description\":\"Полная информация о кафе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"cafe_id\", String(savedId));",
+                  "        pm.globals.set(\"cafe_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{cafe_name}}\",\n  \"address\": \"{{cafe_address}}\",\n  \"phone\": \"{{phone}}\",\n  \"description\": \"{{cafe_description}}\",\n  \"photo_id\": null,\n  \"managers_id\": [{{manager_user_id}}]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes"
+              ]
+            },
+            "description": "Создает новое кафе. Только для администраторов."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes — Get All Cafes as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"type\":\"array\",\"items\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"managers\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},\"type\":\"array\",\"title\":\"Managers\",\"default\":[]},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"CafeInfo\",\"description\":\"Полная информация о кафе.\"},\"title\":\"Response Get All Cafes Api V1 Cafes Get\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ]
+            },
+            "description": "Получить список всех кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes/{cafe_id} — Get Cafe as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"managers\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},\"type\":\"array\",\"title\":\"Managers\",\"default\":[]},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"CafeInfo\",\"description\":\"Полная информация о кафе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Получает информацию о кафе по ID."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id} — Update Cafe as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"managers\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},\"type\":\"array\",\"title\":\"Managers\",\"default\":[]},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"CafeInfo\",\"description\":\"Полная информация о кафе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{cafe_name_updated}}\",\n  \"address\": \"{{cafe_address}}\",\n  \"phone\": \"{{phone}}\",\n  \"description\": \"{{cafe_description_updated}}\",\n  \"photo_id\": null,\n  \"managers_id\": [],\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о кафе."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Столы",
+      "item": [
+        {
+          "name": "POST /api/v1/cafes/{cafe_id}/tables — Create Table as Admin, save table_id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TableInfo\",\"description\":\"Полная информация о столе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"table_id\", String(savedId));",
+                  "        pm.globals.set(\"table_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{table_description}}\",\n  \"seat_number\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Создание стола для кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes/{cafe_id}/tables — Get Cafe Tables as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"type\":\"array\",\"items\":{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TableInfo\",\"description\":\"Полная информация о столе.\"},\"title\":\"Response Get Cafe Tables Api V1 Cafes  Cafe Id  Tables Get\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Получает список столов в кафе с учетом роли пользователя."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes/{cafe_id}/tables/{table_id} — Get Table as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TableInfo\",\"description\":\"Полная информация о столе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables/:table_id?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables",
+                ":table_id"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "table_id",
+                  "value": "{{table_id}}"
+                }
+              ]
+            },
+            "description": "Получает информацию о столе по ID ."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/tables/{table_id} — Update Table as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TableInfo\",\"description\":\"Полная информация о столе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{table_description_updated}}\",\n  \"seat_number\": 5,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables/:table_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables",
+                ":table_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "table_id",
+                  "value": "{{table_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о столе."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Временные слоты",
+      "item": [
+        {
+          "name": "POST /api/v1/cafes/{cafe_id}/time_slots — Create Time Slot as Admin, save slot_id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TimeSlotInfo\",\"description\":\"Полная информация о временном слоте.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"slot_id\", String(savedId));",
+                  "        pm.globals.set(\"slot_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{slot_description}}\",\n  \"start_time\": \"{{start_time}}\",\n  \"end_time\": \"{{end_time}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Создает новый временной слот в кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes/{cafe_id}/time_slots — Get Cafe Time Slots as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"type\":\"array\",\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TimeSlotInfo\",\"description\":\"Полная информация о временном слоте.\"},\"title\":\"Response Get Cafe Time Slots Api V1 Cafes  Cafe Id  Time Slots Get\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Получает список временных слотов в кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/cafes/{cafe_id}/time_slots/{slot_id} — Get Time Slot as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TimeSlotInfo\",\"description\":\"Полная информация о временном слоте.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots/:slot_id?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots",
+                ":slot_id"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "slot_id",
+                  "value": "{{slot_id}}"
+                }
+              ]
+            },
+            "description": "Получает информацию о временном слоте по ID."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/time_slots/{slot_id} — Update Time Slot as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TimeSlotInfo\",\"description\":\"Полная информация о временном слоте.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{slot_description_updated}}\",\n  \"start_time\": \"{{start_time_updated}}\",\n  \"end_time\": \"{{end_time_updated}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots/:slot_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots",
+                ":slot_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "slot_id",
+                  "value": "{{slot_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о временном слоте."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "media",
+      "item": [
+        {
+          "name": "POST /api/v1/media — Upload Media as Admin, save media_id",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"string\",\"format\":\"uuid\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"id\"],\"title\":\"MediaRead\",\"description\":\"Ответ при успешной загрузке изображения.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"media_id\", String(savedId));",
+                  "        pm.globals.set(\"media_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "Выберите JPG/PNG файл перед запуском запроса.",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/media",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media"
+              ]
+            },
+            "description": "Принимает изображение JPG/PNG, конвертирует в JPG и сохраняет."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/media/{media_id} — Get Media as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test(\"Content-Type is image/jpeg\", function () {",
+                  "    pm.expect(pm.response.headers.get(\"Content-Type\") || \"\").to.include(\"image/jpeg\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/media/:media_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media",
+                ":media_id"
+              ],
+              "variable": [
+                {
+                  "key": "media_id",
+                  "value": "{{media_id}}"
+                }
+              ]
+            },
+            "description": "Возвращает изображение в формате JPG в виде бинарных данных."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Booking",
+      "item": [
+        {
+          "name": "POST /api/v1/booking — Create Booking as Admin, save admin_booking_id",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "function formatDate(date) {",
+                  "    const year = date.getFullYear();",
+                  "    const month = String(date.getMonth() + 1).padStart(2, \"0\");",
+                  "    const day = String(date.getDate()).padStart(2, \"0\");",
+                  "    return `${year}-${month}-${day}`;",
+                  "}",
+                  "",
+                  "const today = new Date();",
+                  "const tomorrow = new Date(today);",
+                  "tomorrow.setDate(today.getDate() + 1);",
+                  "",
+                  "pm.collectionVariables.set(\"todayDate\", formatDate(today));",
+                  "pm.collectionVariables.set(\"tomorrowDate\", formatDate(tomorrow));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"admin_booking_id\", String(savedId));",
+                  "        pm.globals.set(\"admin_booking_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cafe_id\": {{cafe_id}},\n  \"tables_slots\": [\n    {\n      \"table_id\": {{table_id}},\n      \"slot_id\": {{slot_id}}\n    }\n  ],\n  \"guest_number\": 2,\n  \"note\": \"{{admin_booking_note}}\",\n  \"booking_date\": \"{{todayDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking"
+              ]
+            },
+            "description": "Создать новое бронирование."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/booking/{admin_booking_id} — Update Admin Booking as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tables_slots\": [\n    {\n      \"table_id\": {{table_id}},\n      \"slot_id\": {{slot_id}}\n    }\n  ],\n  \"guest_number\": 3,\n  \"note\": \"{{admin_booking_note_updated}}\",\n  \"status\": \"BOOKING\",\n  \"booking_date\": \"{{todayDate}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{admin_booking_id}}"
+                }
+              ]
+            },
+            "description": "Обновить бронирование по идентификатору."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/booking — Create Booking as User for today, save user_booking_id",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "function formatDate(date) {",
+                  "    const year = date.getFullYear();",
+                  "    const month = String(date.getMonth() + 1).padStart(2, \"0\");",
+                  "    const day = String(date.getDate()).padStart(2, \"0\");",
+                  "    return `${year}-${month}-${day}`;",
+                  "}",
+                  "",
+                  "const today = new Date();",
+                  "const tomorrow = new Date(today);",
+                  "tomorrow.setDate(today.getDate() + 1);",
+                  "",
+                  "pm.collectionVariables.set(\"todayDate\", formatDate(today));",
+                  "pm.collectionVariables.set(\"tomorrowDate\", formatDate(tomorrow));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"user_booking_id\", String(savedId));",
+                  "        pm.globals.set(\"user_booking_id\", String(savedId));",
+                  "    }",
+                  "}",
+                  "",
+                  "if (acceptedStatusCodes.includes(pm.response.code)) {",
+                  "    const data = pm.response.json();",
+                  "    const savedId = data.id;",
+                  "    pm.test(\"Response contains id for further requests\", function () {",
+                  "        pm.expect(savedId).to.exist;",
+                  "    });",
+                  "    if (savedId !== undefined && savedId !== null) {",
+                  "        pm.collectionVariables.set(\"booking_id\", String(savedId));",
+                  "        pm.globals.set(\"booking_id\", String(savedId));",
+                  "    }",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cafe_id\": {{cafe_id}},\n  \"tables_slots\": [\n    {\n      \"table_id\": {{table_id}},\n      \"slot_id\": {{slot_id}}\n    }\n  ],\n  \"guest_number\": 2,\n  \"note\": \"{{user_booking_note}}\",\n  \"booking_date\": \"{{todayDate}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking"
+              ]
+            },
+            "description": "Создать новое бронирование."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/booking/{booking_id} — Get User Booking as User",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{booking_id}}"
+                }
+              ]
+            },
+            "description": "Получить бронирование по идентификатору."
+          },
+          "response": []
+        },
+        {
+          "name": "GET /api/v1/booking — Get All Bookings as User and check user booking exists",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"type\":\"array\",\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"},\"title\":\"Response Get All Bookings Api V1 Booking Get\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}",
+                  "",
+                  "if (pm.response.code === 200) {",
+                  "    const data = pm.response.json();",
+                  "    const expectedId = Number(pm.collectionVariables.get(\"user_booking_id\") || pm.globals.get(\"user_booking_id\"));",
+                  "    pm.test(\"Response list contains previously created user_booking_id\", function () {",
+                  "        pm.expect(data).to.be.an(\"array\");",
+                  "        pm.expect(expectedId).to.be.a(\"number\").and.not.NaN;",
+                  "        pm.expect(data.some(item => Number(item.id) === expectedId)).to.equal(true);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking?show_active={{show_active}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking"
+              ],
+              "query": [
+                {
+                  "key": "show_active",
+                  "value": "{{show_active}}"
+                }
+              ]
+            },
+            "description": "Получить список бронирований с фильтрами."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/booking/{booking_id} — Update User Booking to tomorrow as User",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "function formatDate(date) {",
+                  "    const year = date.getFullYear();",
+                  "    const month = String(date.getMonth() + 1).padStart(2, \"0\");",
+                  "    const day = String(date.getDate()).padStart(2, \"0\");",
+                  "    return `${year}-${month}-${day}`;",
+                  "}",
+                  "",
+                  "const today = new Date();",
+                  "const tomorrow = new Date(today);",
+                  "tomorrow.setDate(today.getDate() + 1);",
+                  "",
+                  "pm.collectionVariables.set(\"todayDate\", formatDate(today));",
+                  "pm.collectionVariables.set(\"tomorrowDate\", formatDate(tomorrow));"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"},\"user\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},{\"type\":\"null\"}]},\"cafe\":{\"anyOf\":[{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},{\"type\":\"null\"}]},\"tables_slots\":{\"items\":{\"properties\":{\"table\":{\"anyOf\":[{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\"],\"title\":\"TableShortInfo\",\"description\":\"Краткая информация о столе.\"},{\"type\":\"null\"}]},\"slot\":{\"anyOf\":[{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\"],\"title\":\"TimeSlotShortInfo\",\"description\":\"Краткая информация о временном слоте.\"},{\"type\":\"null\"}]}},\"additionalProperties\":false,\"type\":\"object\",\"title\":\"BookingTableSlotShortInfo\",\"description\":\"Краткая информация о столике и временном слоте бронирования.\"},\"type\":\"array\",\"title\":\"Tables Slots\"},\"guest_number\":{\"anyOf\":[{\"type\":\"integer\"},{\"type\":\"null\"}],\"title\":\"Guest Number\"},\"note\":{\"type\":\"string\",\"title\":\"Note\",\"default\":\"\"},\"status\":{\"anyOf\":[{\"type\":\"string\",\"enum\":[\"BOOKING\",\"CANCELED\",\"ACTIVE\",\"COMPLETED\"],\"title\":\"BookingStatus\",\"description\":\"Статусы бронирования.\"},{\"type\":\"null\"}]},\"booking_date\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"date\"},{\"type\":\"null\"}],\"title\":\"Booking Date\"}},\"additionalProperties\":false,\"type\":\"object\",\"required\":[\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"BookingInfo\",\"description\":\"Информация о бронировании для ответа API.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tables_slots\": [\n    {\n      \"table_id\": {{table_id}},\n      \"slot_id\": {{slot_id}}\n    }\n  ],\n  \"guest_number\": 2,\n  \"note\": \"{{user_booking_note_updated}}\",\n  \"status\": \"BOOKING\",\n  \"booking_date\": \"{{tomorrowDate}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{booking_id}}"
+                }
+              ]
+            },
+            "description": "Обновить бронирование по идентификатору."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Root",
+      "item": [
+        {
+          "name": "GET / — Index",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"additionalProperties\":true,\"type\":\"object\",\"title\":\"Response Index  Get\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                ""
+              ]
+            },
+            "description": "Return basic app info and health status."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "BadRequests",
+      "item": [
+        {
+          "name": "POST /api/v1/cafes — Create Cafe as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{cafe_name}}\",\n  \"address\": \"{{cafe_address}}\",\n  \"phone\": \"{{phone}}\",\n  \"description\": \"{{cafe_description}}\",\n  \"photo_id\": null,\n  \"managers_id\": []\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes"
+              ]
+            },
+            "description": "Создает новое кафе. Только для администраторов."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id} — Update Cafe as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"name\": \"{{cafe_name_updated}}\",\n  \"address\": \"{{cafe_address}}\",\n  \"phone\": \"{{phone}}\",\n  \"description\": \"{{cafe_description_updated}}\",\n  \"photo_id\": null,\n  \"managers_id\": [],\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id} — Deactivate Cafe as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/cafes/{cafe_id}/tables — Create Table as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{table_description}}\",\n  \"seat_number\": 4\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Создание стола для кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/tables/{table_id} — Update Table as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{table_description_updated}}\",\n  \"seat_number\": 5,\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables/:table_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables",
+                ":table_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "table_id",
+                  "value": "{{table_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о столе."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/tables/{table_id} — Deactivate Table as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables/:table_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables",
+                ":table_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "table_id",
+                  "value": "{{table_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о столе."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/cafes/{cafe_id}/time_slots — Create Time Slot as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{slot_description}}\",\n  \"start_time\": \"{{start_time}}\",\n  \"end_time\": \"{{end_time}}\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Создает новый временной слот в кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/time_slots/{slot_id} — Update Time Slot as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"description\": \"{{slot_description_updated}}\",\n  \"start_time\": \"{{start_time_updated}}\",\n  \"end_time\": \"{{end_time_updated}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots/:slot_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots",
+                ":slot_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "slot_id",
+                  "value": "{{slot_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о временном слоте."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/time_slots/{slot_id} — Deactivate Time Slot as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots/:slot_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots",
+                ":slot_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "slot_id",
+                  "value": "{{slot_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о временном слоте."
+          },
+          "response": []
+        },
+        {
+          "name": "POST /api/v1/media — Upload Media as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "formdata",
+              "formdata": [
+                {
+                  "key": "file",
+                  "type": "file",
+                  "description": "Выберите JPG/PNG файл перед запуском запроса.",
+                  "value": null
+                }
+              ]
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/media",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media"
+              ]
+            },
+            "description": "Принимает изображение JPG/PNG, конвертирует в JPG и сохраняет."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/media/{media_id} — Update Media as User: no rights (undocumented)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/media/:media_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media",
+                ":media_id"
+              ],
+              "variable": [
+                {
+                  "key": "media_id",
+                  "value": "{{media_id}}"
+                }
+              ]
+            },
+            "description": "Undocumented negative permission check requested by user."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/media/{media_id} — Delete Media as User: no rights (undocumented)",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/media/:media_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "media",
+                ":media_id"
+              ],
+              "variable": [
+                {
+                  "key": "media_id",
+                  "value": "{{media_id}}"
+                }
+              ]
+            },
+            "description": "Undocumented negative permission check requested by user."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/booking/{admin_booking_id} — Update Admin Booking as User: no rights",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 403 (no rights)\", function () {",
+                  "    pm.response.to.have.status(403);",
+                  "});",
+                  "pm.test(\"Response says that user has no rights\", function () {",
+                  "    const text = pm.response.text().toLowerCase();",
+                  "    const markers = [\"нет прав\", \"недостаточно\", \"forbidden\", \"permission\", \"not enough\", \"access\", \"доступ\"];",
+                  "    pm.expect(markers.some(marker => text.includes(marker))).to.equal(true);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"tables_slots\": [\n    {\n      \"table_id\": {{table_id}},\n      \"slot_id\": {{slot_id}}\n    }\n  ],\n  \"guest_number\": 3,\n  \"note\": \"{{admin_booking_note_updated}}\",\n  \"status\": \"BOOKING\",\n  \"booking_date\": \"{{todayDate}}\",\n  \"is_active\": true\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{admin_booking_id}}"
+                }
+              ]
+            },
+            "description": "Обновить бронирование по идентификатору."
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "Удаление сущностей",
+      "item": [
+        {
+          "name": "DELETE /api/v1/booking/{user_booking_id} — Delete User Booking as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Response body is empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.equal(\"\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{user_booking_id}}"
+                }
+              ]
+            },
+            "description": "Удалить бронирование по идентификатору."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/booking/{admin_booking_id} — Delete Admin Booking as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Response body is empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.equal(\"\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/booking/:booking_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "booking",
+                ":booking_id"
+              ],
+              "variable": [
+                {
+                  "key": "booking_id",
+                  "value": "{{admin_booking_id}}"
+                }
+              ]
+            },
+            "description": "Удалить бронирование по идентификатору."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/tables/{table_id} — Soft-delete Table as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"seat_number\":{\"type\":\"integer\",\"title\":\"Seat Number\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"seat_number\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TableInfo\",\"description\":\"Полная информация о столе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/tables/:table_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "tables",
+                ":table_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "table_id",
+                  "value": "{{table_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о столе."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id}/time_slots/{slot_id} — Soft-delete Time Slot as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"start_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"Start Time\"},\"end_time\":{\"type\":\"string\",\"format\":\"time\",\"title\":\"End Time\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"cafe\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\"],\"title\":\"CafeShortInfo\",\"description\":\"Краткая информация о кафе.\"},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"id\",\"start_time\",\"end_time\",\"cafe\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"TimeSlotInfo\",\"description\":\"Полная информация о временном слоте.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id/time_slots/:slot_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id",
+                "time_slots",
+                ":slot_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                },
+                {
+                  "key": "slot_id",
+                  "value": "{{slot_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о временном слоте."
+          },
+          "response": []
+        },
+        {
+          "name": "PATCH /api/v1/cafes/{cafe_id} — Soft-delete Cafe as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "const responseSchemas = {\"200\":{\"properties\":{\"name\":{\"type\":\"string\",\"maxLength\":255,\"title\":\"Name\"},\"address\":{\"type\":\"string\",\"maxLength\":500,\"title\":\"Address\"},\"phone\":{\"type\":\"string\",\"maxLength\":50,\"pattern\":\"^\\\\+?[0-9][0-9 \\\\-\\\\(\\\\)]{5,}$\",\"title\":\"Phone\"},\"description\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Description\"},\"photo_id\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"uuid\"},{\"type\":\"null\"}],\"title\":\"Photo Id\"},\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"managers\":{\"items\":{\"properties\":{\"id\":{\"type\":\"integer\",\"title\":\"Id\"},\"username\":{\"type\":\"string\",\"title\":\"Username\"},\"email\":{\"anyOf\":[{\"type\":\"string\",\"format\":\"email\"},{\"type\":\"null\"}],\"title\":\"Email\"},\"phone\":{\"anyOf\":[{\"type\":\"string\"},{\"type\":\"null\"}],\"title\":\"Phone\"},\"role\":{\"type\":\"string\",\"enum\":[\"ADMIN\",\"MANAGER\",\"USER\"],\"title\":\"UserRole\",\"description\":\"Роли, определяющие права доступа пользователя.\"}},\"type\":\"object\",\"required\":[\"id\",\"username\",\"role\"],\"title\":\"UserShortInfo\",\"description\":\"Краткая информация о пользователе.\"},\"type\":\"array\",\"title\":\"Managers\",\"default\":[]},\"is_active\":{\"type\":\"boolean\",\"title\":\"Is Active\"},\"created_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Created At\"},\"updated_at\":{\"type\":\"string\",\"format\":\"date-time\",\"title\":\"Updated At\"}},\"type\":\"object\",\"required\":[\"name\",\"address\",\"phone\",\"id\",\"is_active\",\"created_at\",\"updated_at\"],\"title\":\"CafeInfo\",\"description\":\"Полная информация о кафе.\"}};",
+                  "const acceptedStatusCodes = [200];",
+                  "const statusCode = pm.response.code;",
+                  "pm.test(\"Status code is 200\", function () {",
+                  "    pm.expect(acceptedStatusCodes).to.include(statusCode);",
+                  "});",
+                  "",
+                  "if (Object.prototype.hasOwnProperty.call(responseSchemas, String(statusCode))) {",
+                  "    pm.test(\"Response body is valid JSON\", function () {",
+                  "        pm.expect(function () { pm.response.json(); }).not.to.throw();",
+                  "    });",
+                  "",
+                  "    pm.test(\"Response body matches documented JSON schema\", function () {",
+                  "        pm.response.to.have.jsonSchema(responseSchemas[String(statusCode)]);",
+                  "    });",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json",
+                "type": "text"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"is_active\": false\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/cafes/:cafe_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "cafes",
+                ":cafe_id"
+              ],
+              "variable": [
+                {
+                  "key": "cafe_id",
+                  "value": "{{cafe_id}}"
+                }
+              ]
+            },
+            "description": "Обновляет информацию о кафе."
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE /api/v1/users/{user_id} — Delete User as Admin",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status code is 204\", function () {",
+                  "    pm.response.to.have.status(204);",
+                  "});",
+                  "pm.test(\"Response body is empty\", function () {",
+                  "    pm.expect(pm.response.text()).to.equal(\"\");",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "DELETE",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{tokenAdmin}}",
+                "type": "text"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/v1/users/:user_id",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "v1",
+                "users",
+                ":user_id"
+              ],
+              "variable": [
+                {
+                  "key": "user_id",
+                  "value": "{{user_id}}"
+                }
+              ]
+            },
+            "description": "Удаление пользователя."
+          },
+          "response": []
+        }
+      ]
+    }
+  ],
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "requests": {},
+        "exec": [
+          "function formatDate(date) {",
+          "    const year = date.getFullYear();",
+          "    const month = String(date.getMonth() + 1).padStart(2, \"0\");",
+          "    const day = String(date.getDate()).padStart(2, \"0\");",
+          "    return `${year}-${month}-${day}`;",
+          "}",
+          "",
+          "const today = new Date();",
+          "const tomorrow = new Date(today);",
+          "tomorrow.setDate(today.getDate() + 1);",
+          "",
+          "pm.collectionVariables.set(\"todayDate\", formatDate(today));",
+          "pm.collectionVariables.set(\"tomorrowDate\", formatDate(tomorrow));"
+        ]
+      }
+    },
+    {
+      "listen": "test",
+      "script": {
+        "type": "text/javascript",
+        "packages": {},
+        "requests": {},
+        "exec": [
+          ""
+        ]
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8000"
+    },
+    {
+      "key": "login",
+      "value": "testuser"
+    },
+    {
+      "key": "password",
+      "value": "password123"
+    },
+    {
+      "key": "token",
+      "value": ""
+    },
+    {
+      "key": "userAdmin",
+      "value": "admin@example.org"
+    },
+    {
+      "key": "passwordAdmin",
+      "value": "admin123456"
+    },
+    {
+      "key": "tokenAdmin",
+      "value": ""
+    },
+    {
+      "key": "username",
+      "value": "testuser"
+    },
+    {
+      "key": "email",
+      "value": "testuser@example.com"
+    },
+    {
+      "key": "phone",
+      "value": "+994501234567"
+    },
+    {
+      "key": "user_id",
+      "value": "1"
+    },
+    {
+      "key": "admin_user_id",
+      "value": "1"
+    },
+    {
+      "key": "cafe_id",
+      "value": "1"
+    },
+    {
+      "key": "cafe_name",
+      "value": "Test Cafe"
+    },
+    {
+      "key": "cafe_name_updated",
+      "value": "Test Cafe Updated"
+    },
+    {
+      "key": "cafe_address",
+      "value": "Baku, Test street 1"
+    },
+    {
+      "key": "cafe_description",
+      "value": "Test cafe description"
+    },
+    {
+      "key": "cafe_description_updated",
+      "value": "Updated test cafe description"
+    },
+    {
+      "key": "table_id",
+      "value": "1"
+    },
+    {
+      "key": "table_description",
+      "value": "Table near window"
+    },
+    {
+      "key": "table_description_updated",
+      "value": "Updated table description"
+    },
+    {
+      "key": "slot_id",
+      "value": "1"
+    },
+    {
+      "key": "slot_description",
+      "value": "Lunch slot"
+    },
+    {
+      "key": "slot_description_updated",
+      "value": "Updated lunch slot"
+    },
+    {
+      "key": "start_time",
+      "value": "12:00:00"
+    },
+    {
+      "key": "end_time",
+      "value": "13:00:00"
+    },
+    {
+      "key": "start_time_updated",
+      "value": "14:00:00"
+    },
+    {
+      "key": "end_time_updated",
+      "value": "15:00:00"
+    },
+    {
+      "key": "booking_id",
+      "value": "1"
+    },
+    {
+      "key": "admin_booking_id",
+      "value": "1"
+    },
+    {
+      "key": "user_booking_id",
+      "value": "1"
+    },
+    {
+      "key": "admin_booking_note",
+      "value": "Admin test booking"
+    },
+    {
+      "key": "admin_booking_note_updated",
+      "value": "Admin test booking updated"
+    },
+    {
+      "key": "user_booking_note",
+      "value": "User test booking"
+    },
+    {
+      "key": "user_booking_note_updated",
+      "value": "User test booking updated"
+    },
+    {
+      "key": "todayDate",
+      "value": ""
+    },
+    {
+      "key": "tomorrowDate",
+      "value": ""
+    },
+    {
+      "key": "booking_date",
+      "value": ""
+    },
+    {
+      "key": "media_id",
+      "value": "00000000-0000-0000-0000-000000000000"
+    },
+    {
+      "key": "show_active",
+      "value": "true"
+    },
+    {
+      "key": "userManager",
+      "value": ""
+    },
+    {
+      "key": "passwordManager",
+      "value": ""
+    },
+    {
+      "key": "phoneManager",
+      "value": ""
+    },
+    {
+      "key": "emailManager",
+      "value": ""
+    },
+    {
+      "key": "tokenManager",
+      "value": ""
+    },
+    {
+      "key": "manager_user_id",
+      "value": ""
+    },
+    {
+      "key": "phoneAdmin",
+      "value": ""
+    }
+  ]
+}
